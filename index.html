@@ -478,6 +478,45 @@
     font-weight:800;
   }
 
+  /* ---------- FHD notebooks/desktops: compact trade chart ---------- */
+  @media (min-width: 1201px) and (max-width: 1920px) and (max-height: 1100px){
+    #tradeChart{
+      max-width: 575px;
+      transform: translateY(-30px);
+      position:relative;
+      z-index:1;
+    }
+    .trade-chart-row{
+      max-width: 575px;
+    }
+    .timeline-wrap{
+      max-width: 575px;
+      margin-top: -100px;
+      position:relative;
+      z-index:2;
+    }
+
+    /* National accounts: 1.5x narrower and 1.8x shorter on FHD notebooks.
+       Keep SVG at natural CSS scale so tick/data labels stay the same size. */
+    .acc-chart-wrap{
+      max-width: 933.333px;
+      height: auto;
+      overflow: visible;
+    }
+    #accountsChart{
+      width: 100%;
+      height: auto;
+      display: block;
+      overflow: visible;
+      transform: none;
+    }
+
+    /* Map globe: 1.6x smaller on FHD notebooks */
+    #globe{
+      max-width: min(100%, 562.5px);
+    }
+  }
+
   @media (max-width: 1200px){
     .trade-layout{ flex-direction:column; align-items:center; }
     .trade-controls{ width:100%; }
@@ -557,7 +596,7 @@
   @media (max-width: 900px){
     .hero-arcs{ left:75%; opacity:0.6; }
     .hero-title{
-      transform: translateY(-18vh);
+      transform: translateY(-12vh);
       width:100%;
       max-width:100%;
       padding:0 20px;
@@ -1480,7 +1519,10 @@ function drawAccountsChart(){
   const cfg = INDICATORS[accIndicator];
 
   const width = Math.max(320, wrap.clientWidth);
-  const height = Math.round(Math.min(640, Math.max(360, width * 0.46)));
+  const isFhdNotebook = window.matchMedia('(min-width: 1201px) and (max-width: 1920px) and (max-height: 1100px)').matches;
+  const height = isFhdNotebook
+    ? 356
+    : Math.round(Math.min(640, Math.max(360, width * 0.46)));
   const isMobileMargins = window.matchMedia('(max-width: 900px)').matches;
   const margin = { top: 16, right: 16, bottom: isMobileMargins ? 68 : 40, left: isMobileMargins ? 60 : 84 };
   svg.attr('viewBox', `0 0 ${width} ${height}`);
