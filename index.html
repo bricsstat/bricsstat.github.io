@@ -85,7 +85,7 @@
 
   main{
     position:relative;
-    min-height: 100vh;
+    min-height: min(100vh, 880px);
     padding: 40px;
     padding-top: 8px;
   }
@@ -106,7 +106,7 @@
   .panel{
     width: 400px;
     flex-shrink: 0;
-    padding-top: 40px;
+    padding-top: 0;
   }
 
   .table-shell{ font-size:13px; }
@@ -176,7 +176,7 @@
   #globe{
     cursor: grab;
     touch-action: none;
-    max-width: 100%;
+    max-width: min(100%, 900px);
     height: auto;
     display: block;
   }
@@ -260,7 +260,7 @@
   }
   .about-contact .contact-label{
     display:inline-block;
-    min-width: 112px;
+    min-width: 103px;
   }
   .about-contact .contact-value{
     font-weight:400;
@@ -319,6 +319,7 @@
   }
 
   @media (max-width: 900px){
+    .about-contact .contact-label{ min-width: 56px; }
     .about-section{ padding: 70px 20px 40px; }
     .about-text{ font-size: 16px; max-width: 100%; }
     .about-contacts{ margin-top: 52px; }
@@ -493,8 +494,8 @@
 
   /* ---------- national accounts section ---------- */
   .accounts-section{
-    min-height:100vh;
-    padding: 100px 40px 60px;
+    min-height:min(100vh, 880px);
+    padding: 60px 40px 60px;
   }
   .accounts-controls{ display:flex; gap:60px; flex-wrap:wrap; margin-bottom:26px; }
   .control-group{ display:flex; flex-direction:column; }
@@ -518,7 +519,7 @@
   .country-list{
     display:grid;
     grid-auto-flow:column;
-    grid-template-rows:repeat(3, auto);
+    grid-template-rows:repeat(4, auto);
     grid-auto-columns:max-content;
     gap:2px 24px;
     align-items:start;
@@ -536,7 +537,7 @@
     cursor:pointer;
   }
 
-  .acc-chart-wrap{ width:100%; }
+  .acc-chart-wrap{ width:100%; max-width:1400px; margin:0 auto; }
   #accountsChart{ width:100%; height:auto; display:block; overflow:visible; }
   .gridline{ stroke: rgba(255,255,255,0.28); stroke-width:1px; }
   .chart-tick{ fill: var(--white); font-family:inherit; font-weight:700; font-size:14px; }
@@ -556,7 +557,7 @@
   @media (max-width: 900px){
     .hero-arcs{ left:75%; opacity:0.6; }
     .hero-title{
-      transform: translateY(-6vh);
+      transform: translateY(-18vh);
       width:100%;
       max-width:100%;
       padding:0 20px;
@@ -568,6 +569,7 @@
       letter-spacing:-0.035em;
       overflow-wrap:anywhere;
       word-break:normal;
+      margin-top:-1.5em;
     }
     .hero-title .subtitle{
       max-width:100%;
@@ -576,8 +578,45 @@
     .layout{ flex-direction:column; }
     .panel{ width:100%; }
     header{ padding:18px 20px; }
-    nav{ gap:18px; flex-wrap:wrap; }
+    nav{ gap:18px; flex-wrap:wrap; justify-content:flex-end; text-align:right; }
+    .timeline-wrap{ margin-top: -50px; }
     main{ padding:20px; }
+  }
+
+  /* ---------- mobile: scale all text down 15% ---------- */
+  @media (max-width: 900px){
+    .logo .brand{ font-size: 18.7px !important; }
+    .logo .sub{ font-size: 9.35px !important; }
+    nav a{ font-size: 11.9px !important; }
+    h1.section-title{ font-size: 34.0px !important; }
+    .table-shell{ font-size: 11.05px !important; }
+    select.name-select{ font-size: 12.75px !important; }
+    select.year-select{ font-size: 12.75px !important; }
+    .legend-row{ font-size: 10.62px !important; }
+    .detail-row{ font-size: 10.62px !important; }
+    .hint{ font-size: 9.35px !important; }
+    .hero-title{ font-size: clamp(35.7px, 5.87vw, 79.05px) !important; }
+    .about-text{ font-size: 17.0px !important; }
+    .about-contacts-title{ font-size: 23.8px !important; }
+    .about-contact{ font-size: 17.0px !important; }
+    .about-text{ font-size: 13.6px !important; }
+    .about-contact{ font-size: 13.6px !important; }
+    .trade-subtitle{ font-size: 12.75px !important; }
+    .trade-legend{ font-size: 11.05px !important; }
+    .field-label{ font-size: 11.05px !important; }
+    select.full-select{ font-size: 11.05px !important; }
+    .play-btn{ font-size: 34.0px !important; }
+    .timeline-year{ font-size: 28.05px !important; }
+    .control-label{ font-size: 11.9px !important; }
+    .period-row{ font-size: 11.9px !important; }
+    .add-btn{ font-size: 14.45px !important; }
+    .country-chip{ font-size: 11.05px !important; }
+    .country-chip .remove{ font-size: 9.35px !important; }
+    .chart-tick{ font-size: 11.9px !important; }
+    .chart-legend .item{ font-size: 11.05px !important; }
+    .chart-caption{ font-size: 11.9px !important; }
+    .hero-title h1{ font-size: clamp(35.7px, 12.75vw, 93.5px) !important; }
+    .hero-title .subtitle{ font-size: clamp(11.05px, 2.98vw, 15.3px) !important; }
   }
 </style>
 </head>
@@ -1442,7 +1481,8 @@ function drawAccountsChart(){
 
   const width = Math.max(320, wrap.clientWidth);
   const height = Math.round(Math.min(640, Math.max(360, width * 0.46)));
-  const margin = { top: 16, right: 16, bottom: 40, left: 84 };
+  const isMobileMargins = window.matchMedia('(max-width: 900px)').matches;
+  const margin = { top: 16, right: 16, bottom: isMobileMargins ? 68 : 40, left: isMobileMargins ? 60 : 84 };
   svg.attr('viewBox', `0 0 ${width} ${height}`);
 
   const innerW = width - margin.left - margin.right;
@@ -1511,14 +1551,20 @@ function drawAccountsChart(){
     .attr('dy', '0.32em').attr('text-anchor', 'end')
     .text(d => fmtNumber(d, cfg.money));
 
+  const isMobileWidth = window.matchMedia('(max-width: 900px)').matches;
+
   state.selectAll('.xtick')
     .data(years)
     .enter()
     .append('text')
     .attr('class', 'chart-tick')
-    .attr('x', d => x0(d) + x0.bandwidth() / 2)
-    .attr('y', innerH + 30)
-    .attr('text-anchor', 'middle')
+    .attr('text-anchor', isMobileWidth ? 'end' : 'middle')
+    .attr('dy', isMobileWidth ? '0.32em' : '0.71em')
+    .attr('transform', d=>{
+      const cx = x0(d) + x0.bandwidth() / 2;
+      const cy = innerH + (isMobileWidth ? 12 : 30);
+      return isMobileWidth ? `translate(${cx},${cy}) rotate(-90)` : `translate(${cx},${cy})`;
+    })
     .text(d => d);
 
   // No D3 join/update/merge is used for bars.
